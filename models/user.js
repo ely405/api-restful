@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 //codificar la contraseña
 const bcrypt = require('bcrypt-nodejs');
+//gravatar
+const crypto = require('crypto');
 
 const userSchema = new schema({
     email: {type: String, unique: true, lowercase: true}, //que sea el único
@@ -37,3 +39,14 @@ userSchema.pre('save', next=>{
         });
     });
 });
+
+//avatar
+userSchema.methods.gravatar = ()=>{
+    let user = this;
+    if(!user.email) return `https://gravatar.com/avatar/?s=200&d=retro`;
+
+    const md5 = crypto.createHash(`md5`).update(user.email).digest(`hex`);
+    return `https://gravatar.com/avatar/${md5}?s=200&d=retro`;
+}
+
+module.exports = mongoose.model(`user`, userSchema);
