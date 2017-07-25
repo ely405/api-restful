@@ -50,14 +50,23 @@ app.post('/api/product', (request, response)=>{
 app.put('/api/product/:productId', (request, response)=>{
     let productId = request.params.productId;
     let update = request.body;
-    if(error) return response.status(500).send({message: `Error al actualizar producto: ${error}`});
-    response.status(200).send({message: `El producto ha sido actualizado`});    
+
+    Product.findByIdAndUpdate(productId, update, (error, productUpdated)=>{
+        if(error) return response.status(500).send({message: `Error al actualizar producto: ${error}`});
+        response.status(200).send({product: productUpdated});    
+
+    });
 });
 
 app.delete('/api/product/:productId', (request, response)=>{
     let productId = request.params.productId;
-    if(error) return response.status(500).send({message: `Error al borrar producto: ${error}`});
-    response.status(200).send({message: `El producto ha sido eliminado`});
+    Product.findById(productId, (error, product)=>{
+        if(error) return response.status(500).send({message: `Error al borrar producto: ${error}`});
+        product.remove(error =>{
+            if(error) return response.status(500).send({message: `Error al borrar producto: ${error}`});
+            response.status(200).send({message: `El producto ha sido eliminado`});
+        });
+    });
 });
 
 mongoose.connect(`mongodb://localhost:27017/shop`, (error, response)=>{
