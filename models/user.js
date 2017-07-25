@@ -16,7 +16,7 @@ const userSchema = new schema({
     signupDate: {type: Date,
                 default: Date.now() //fecha del momento de inscribirse
     },
-    //actuliza cada vez que el usuario ingresa
+    //actualiza cada vez que el usuario ingresa
     lastLogin: Date
 });
 
