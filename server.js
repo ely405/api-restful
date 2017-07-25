@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -10,7 +11,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/api/product', (request, response)=>{
-    response.send(200, {products: []});
+    response.status(200).send({products: []});
 });
 
 app.get('/api/product/:productId', (request, response)=>{
@@ -37,6 +38,10 @@ app.delete('/api/product/:productId', (request, response)=>{
     response.status(200).send({message: `El producto ha sido eliminado`});
 });
 
-app.listen(port, ()=>{
-    console.log(`API RESTful en localhost:${port}`);
+mongoose.connect('mongodb://localhost:27017/shop', (error, response)=>{
+    if(error) throw error;
+    console.log(`Established connection to data base`);
+    app.listen(port, ()=>{
+        console.log(`API RESTful en localhost:${port}`);
+    });
 });
