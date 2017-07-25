@@ -20,3 +20,20 @@ const userSchema = new schema({
 
 //Middleware (también llamado pre y post ganchos ) 
 //son funciones que se pasan el control durante la ejecución de funciones asíncronas.
+
+userSchema.pre('save', next=>{
+    let user = this;
+    if(!user.isModified('password')) return next();
+
+    //genSalt(rounds, cb(err, result))
+    bcrypt.genSalt(10, (error, salt)=>{
+        if(error) return next(error);
+
+        //hash(data, salt, progress, cb(err, hash))
+        bcrypt.hash(user.password, salt, null, (error, hash)=>{
+            if(error) return next(error);
+            user.password = hash;
+            next()
+        });
+    });
+});
