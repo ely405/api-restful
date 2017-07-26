@@ -11,6 +11,7 @@ const isAuthorized = (request, response, next)=>{
    
     service.decodeToken(tokenClientHeader)
         .then(resp=>{
+            console.log(resp); //id
             request.user = resp;
             next();
         })

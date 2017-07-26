@@ -1,29 +1,23 @@
 'use  strict';
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
-//codificar la contraseña
 const bcrypt = require('bcrypt-nodejs');
-//gravatar
 const crypto = require('crypto');
 
 const userSchema = new schema({
-    email: {type: String, unique: true, lowercase: true}, //que sea el único
+    email: {type: String, unique: true, lowercase: true},
     displayName : String,
     avatarURL: String,
     password: {type: String,
-                 select: false //al hacer GET de user no se envíe la contraseña
+                 select: false
                 },
     signupDate: {type: Date,
-                default: Date.now() //fecha del momento de inscribirse
+                default: Date.now()
     },
-    //actualiza cada vez que el usuario ingresa
     lastLogin: Date
 });
 
-//Middleware (también llamado pre y post ganchos ) 
-//son funciones que se pasan el control durante la ejecución de funciones asíncronas.
-
-userSchema.pre('save', next=>{
+userSchema.pre('save', function(next){
     let user = this;
     if(!user.isModified('password')) return next();
 
@@ -40,7 +34,6 @@ userSchema.pre('save', next=>{
     });
 });
 
-//avatar
 userSchema.methods.gravatar = ()=>{
     let user = this;
     if(!user.email) return `https://gravatar.com/avatar/?s=200&d=retro`;

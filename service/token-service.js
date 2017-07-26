@@ -6,9 +6,9 @@ const config = require('../config');
 
 const createToken = (userToCreate)=>{
     let payload = {
-        sub: user._id,
-        iat: moment.unix(),
-        exp: moment.add(7, 'days').unix()
+        sub: userToCreate._id,
+        iat: moment().unix(),
+        exp: moment().add(1, 'days').unix()
     }
 
     return jwt.encode(payload, config.SECRET_TOKEN);
@@ -26,7 +26,7 @@ const decodeToken = (tokenToDecode)=>{
                 });
             }
 
-            resolve(payloadDecoded.sub);
+            resolve(payloadDecoded.sub); //id
         } catch(error){
             reject({
                 status: 500,
