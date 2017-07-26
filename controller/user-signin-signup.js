@@ -27,7 +27,7 @@ const signIn = (request, response)=>{
         if(!user) return response.status(404).send({message: `Usuario no existe`});
 
         request.user = user;
-        request.status(200).send({
+        response.status(200).send({
             message: `Te has logeado correctamente`, 
             token: service.createToken(user)});
     });
