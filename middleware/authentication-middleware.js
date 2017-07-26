@@ -1,8 +1,6 @@
 'use strict';
 
-const jwt = require('jwt-simple');
-const moment = require('moment');
-const config = require('../config');
+const service = require('../service/token-service');
 
 const isAuthorized = (request, response, next)=>{
     if(!request.headers.authorization){
@@ -10,14 +8,15 @@ const isAuthorized = (request, response, next)=>{
     }
 
     const tokenClientHeader = request.headers.authorization.split(' ')[1];
-    const payloadDecoded = jwt.decode(tokenClientHeader, config.SECRET_TOKEN);
-
-    if(payloadDecoded.exp < moment.unix()){
-        return response.status(401).send({message: `El token ha expirado`});
-    }
-
-    request.user = payloadDecoded.sub;
-    next();
+   
+    service.decodeToken(tokenClientHeader)
+        .then(resp=>{
+            request.user = resp;
+            next();
+        })
+        .catch(resp=>{
+            response.status(resp.status);
+        });
 }
 
 module.exports = isAuthorized;

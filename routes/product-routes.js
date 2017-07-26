@@ -11,7 +11,7 @@ api.get('/product/:productId', productController.getProduct);
 api.post('/product', productController.saveProduct);
 api.put('/product/:productId', productController.updateProduct);
 api.delete('/product/:productId', productController.deleteProduct);
-api.get('./private', auth.isAuthorized, (request, response)=>{
+api.get('./private', auth, (request, response)=>{
     response.status(200).send({message: `Tienes acceso`});
 });
 
