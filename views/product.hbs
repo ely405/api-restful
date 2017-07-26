@@ -1,0 +1,20 @@
+<script type="text/javascript">
+    let productList = document.createElement('ul');
+
+    const newHeader = new Headers();
+    newHeader.append('authorization', `Bearer ${localStorage.token}`)
+    fetch('/api/product', {
+        method: 'GET',
+        headers: newHeader
+    })
+    .then(res => res.json())
+    .then(data =>{
+        data.allProducts.map(product=>{
+            let item = document.createElement('li');
+            let text = document.createTextNode(product.name);
+            item.append(text);
+            productList.append(item);
+        });
+        document.body.append(productList);
+    });
+</script>

@@ -7,9 +7,9 @@ const auth = require('../middleware/authentication-middleware');
 
 const api = express.Router();
 
-api.get('/product', productController.getAllProducts);
+api.get('/product',auth, productController.getAllProducts);
 api.get('/product/:productId', productController.getProduct);
-api.post('/product', auth, productController.saveProduct);
+api.post('/product', productController.saveProduct);
 api.put('/product/:productId', auth, productController.updateProduct);
 api.delete('/product/:productId', auth, productController.deleteProduct);
 api.post('/signUp', userController.signUp);

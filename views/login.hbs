@@ -1,4 +1,4 @@
-<form id="form-login" action="post">
+<form id="form-login" method="post">
     <input type="email" name="email" placeholder="Ingresa tu email">
     <br>
     <input type="password" name="password" placeholder="Ingresa tu contraseña">
@@ -9,7 +9,6 @@
 <script type="text/javascript">
     const formLogin = document.querySelector('#form-login');
     const formData = new FormData(formLogin);
-    console.log(formData);
 
     formLogin.addEventListener('submit', event=>{
         event.preventDefault();

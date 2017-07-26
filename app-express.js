@@ -19,5 +19,8 @@ app.use('/api', api);
 app.get('/login', (req, res)=>{
     res.render('login');
 });
+app.get('/product', (req, res)=>{
+    res.render('product');
+});
 
 module.exports = app;
